@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>todo-inline</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <style>
+  body {
+    max-width: 50em;
+  }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">todo-inline</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#inline_todoinline_todo.py-31-items"><span><code>./inline_todo/inline_todo.py</code></span> – 31 items</a></li>
+</ul>
+</nav>
+<h1 id="inline_todoinline_todo.py-31-items"><a href="./inline_todo/inline_todo.py"><code>./inline_todo/inline_todo.py</code></a> – 31 items</h1>
+<h2 id="item"><strong>!!!</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+!!!“, (line 85)</p><details>
+<div class="sourceCode" id="cb1" data-startFrom="85"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 84;"><span id="cb1-85"><a href="#cb1-85"></a>         <span class="co">&quot;!!!&quot;</span>,</span>
+<span id="cb1-86"><a href="#cb1-86"></a>         <span class="co">&quot;OLD&quot;</span></span>
+<span id="cb1-87"><a href="#cb1-87"></a>     ],</span>
+<span id="cb1-88"><a href="#cb1-88"></a> },</span>
+<span id="cb1-89"><a href="#cb1-89"></a> <span class="co"># &#39;comments&#39; : {</span></span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="bug-2-items"><strong>BUG</strong> – 2 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+BUG”, (line 76)</p><details>
+<div class="sourceCode" id="cb2" data-startFrom="76"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 75;"><span id="cb2-76"><a href="#cb2-76"></a> <span class="co">&quot;BUG&quot;</span>,</span>
+<span id="cb2-77"><a href="#cb2-77"></a> <span class="co">&quot;DEBUG&quot;</span>,</span>
+<span id="cb2-78"><a href="#cb2-78"></a> <span class="co">&quot;UGLY&quot;</span>,</span>
+<span id="cb2-79"><a href="#cb2-79"></a> <span class="co">&quot;HACK&quot;</span>,</span>
+<span id="cb2-80"><a href="#cb2-80"></a> <span class="co">&quot;NOTE&quot;</span>,</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+BUG”, (line 77)</p><details>
+<div class="sourceCode" id="cb3" data-startFrom="77"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 76;"><span id="cb3-77"><a href="#cb3-77"></a> <span class="co">&quot;DEBUG&quot;</span>,</span>
+<span id="cb3-78"><a href="#cb3-78"></a> <span class="co">&quot;UGLY&quot;</span>,</span>
+<span id="cb3-79"><a href="#cb3-79"></a> <span class="co">&quot;HACK&quot;</span>,</span>
+<span id="cb3-80"><a href="#cb3-80"></a> <span class="co">&quot;NOTE&quot;</span>,</span>
+<span id="cb3-81"><a href="#cb3-81"></a> <span class="co">&quot;IDEA&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="config-4-items"><strong>CONFIG</strong> – 4 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+CONFIG_DEFAULT` (line 414)</p><details>
+<div class="sourceCode" id="cb4" data-startFrom="414"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 413;"><span id="cb4-414"><a href="#cb4-414"></a>  <span class="op">-</span> `CONFIG_DEFAULT`</span>
+<span id="cb4-415"><a href="#cb4-415"></a>  <span class="op">-</span> <span class="bu">file</span> specified by `CONFIG_DEFAULT[<span class="st">&#39;config&#39;</span>][<span class="st">&#39;file_in&#39;</span>]`</span>
+<span id="cb4-416"><a href="#cb4-416"></a>  <span class="op">-</span> command line args</span>
+<span id="cb4-417"><a href="#cb4-417"></a>  <span class="op">-</span> <span class="bu">file</span> specified by command line arg `<span class="op">--</span>config.file_in`</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+CONFIG_DEFAULT` (line 420)</p><details>
+<div class="sourceCode" id="cb5" data-startFrom="420"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 419;"><span id="cb5-420"><a href="#cb5-420"></a> <span class="op">-</span> `CONFIG_DEFAULT`</span>
+<span id="cb5-421"><a href="#cb5-421"></a> <span class="op">-</span> <span class="bu">file</span> specified by `CONFIG_DEFAULT[<span class="st">&#39;config&#39;</span>][<span class="st">&#39;file_in&#39;</span>]`</span>
+<span id="cb5-422"><a href="#cb5-422"></a> <span class="op">-</span> <span class="bu">file</span> specified by command line arg `<span class="op">--</span>config.file_in`</span>
+<span id="cb5-423"><a href="#cb5-423"></a> <span class="op">-</span> command line args</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+CONFIG_DEFAULT : DictConfig = OmegaConf.create({ (line 54)</p><details>
+<div class="sourceCode" id="cb6" data-startFrom="54"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 53;"><span id="cb6-54"><a href="#cb6-54"></a> CONFIG_DEFAULT : DictConfig <span class="op">=</span> OmegaConf.create({</span>
+<span id="cb6-55"><a href="#cb6-55"></a>     <span class="st">&#39;config&#39;</span> : {</span>
+<span id="cb6-56"><a href="#cb6-56"></a>         <span class="st">&#39;file_in&#39;</span> : <span class="st">&#39;itodo.yml&#39;</span>,</span>
+<span id="cb6-57"><a href="#cb6-57"></a>         <span class="st">&#39;file_out&#39;</span> : <span class="va">None</span>,</span>
+<span id="cb6-58"><a href="#cb6-58"></a>     },</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+CONFIG”, (line 84)</p><details>
+<div class="sourceCode" id="cb7" data-startFrom="84"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 83;"><span id="cb7-84"><a href="#cb7-84"></a>         <span class="co">&quot;CONFIG&quot;</span>,</span>
+<span id="cb7-85"><a href="#cb7-85"></a>         <span class="co">&quot;!!!&quot;</span>,</span>
+<span id="cb7-86"><a href="#cb7-86"></a>         <span class="co">&quot;OLD&quot;</span></span>
+<span id="cb7-87"><a href="#cb7-87"></a>     ],</span>
+<span id="cb7-88"><a href="#cb7-88"></a> },</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="crit-2-items"><strong>CRIT</strong> – 2 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+CRIT: there is some sort of bug with loading configs that I can’t pin down (line 1151)</p><details>
+<div class="sourceCode" id="cb8" data-startFrom="1151"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 1150;"><span id="cb8-1151"><a href="#cb8-1151"></a> <span class="co"># CRIT: there is some sort of bug with loading configs that I can&#39;t pin down</span></span>
+<span id="cb8-1152"><a href="#cb8-1152"></a> data : <span class="bu">str</span> <span class="op">=</span> write_items_ms_template(</span>
+<span id="cb8-1153"><a href="#cb8-1153"></a>     td_items <span class="op">=</span> todo_items,</span>
+<span id="cb8-1154"><a href="#cb8-1154"></a>     item_format <span class="op">=</span> cfg[<span class="st">&#39;write&#39;</span>][<span class="st">&#39;item_format&#39;</span>],</span>
+<span id="cb8-1155"><a href="#cb8-1155"></a>     attr_sort_order <span class="op">=</span> cfg[<span class="st">&#39;write&#39;</span>][<span class="st">&#39;attr_sort_order&#39;</span>],</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+CRIT”, (line 72)</p><details>
+<div class="sourceCode" id="cb9" data-startFrom="72"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 71;"><span id="cb9-72"><a href="#cb9-72"></a> <span class="co">&quot;CRIT&quot;</span>,</span>
+<span id="cb9-73"><a href="#cb9-73"></a> <span class="co">&quot;TODO&quot;</span>,</span>
+<span id="cb9-74"><a href="#cb9-74"></a> <span class="co">&quot;FIXME&quot;</span>,</span>
+<span id="cb9-75"><a href="#cb9-75"></a> <span class="co">&quot;FIX&quot;</span>,</span>
+<span id="cb9-76"><a href="#cb9-76"></a> <span class="co">&quot;BUG&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="fix-2-items"><strong>FIX</strong> – 2 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+FIX’ : ‘@’, (line 101)</p><details>
+<div class="sourceCode" id="cb10" data-startFrom="101"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 100;"><span id="cb10-101"><a href="#cb10-101"></a> <span class="co">#     &#39;PREFIX&#39; : &#39;@&#39;,</span></span>
+<span id="cb10-102"><a href="#cb10-102"></a> <span class="co">#     &#39;require&#39; : False,</span></span>
+<span id="cb10-103"><a href="#cb10-103"></a> <span class="co">#     &#39;always_accept&#39; : False,</span></span>
+<span id="cb10-104"><a href="#cb10-104"></a> <span class="co"># },</span></span>
+<span id="cb10-105"><a href="#cb10-105"></a> <span class="co">&#39;SOURCE_FILES&#39;</span> : [</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+FIX”, (line 75)</p><details>
+<div class="sourceCode" id="cb11" data-startFrom="75"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 74;"><span id="cb11-75"><a href="#cb11-75"></a> <span class="co">&quot;FIX&quot;</span>,</span>
+<span id="cb11-76"><a href="#cb11-76"></a> <span class="co">&quot;BUG&quot;</span>,</span>
+<span id="cb11-77"><a href="#cb11-77"></a> <span class="co">&quot;DEBUG&quot;</span>,</span>
+<span id="cb11-78"><a href="#cb11-78"></a> <span class="co">&quot;UGLY&quot;</span>,</span>
+<span id="cb11-79"><a href="#cb11-79"></a> <span class="co">&quot;HACK&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="fixme-1-item"><strong>FIXME</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+FIXME”, (line 74)</p><details>
+<div class="sourceCode" id="cb12" data-startFrom="74"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 73;"><span id="cb12-74"><a href="#cb12-74"></a> <span class="co">&quot;FIXME&quot;</span>,</span>
+<span id="cb12-75"><a href="#cb12-75"></a> <span class="co">&quot;FIX&quot;</span>,</span>
+<span id="cb12-76"><a href="#cb12-76"></a> <span class="co">&quot;BUG&quot;</span>,</span>
+<span id="cb12-77"><a href="#cb12-77"></a> <span class="co">&quot;DEBUG&quot;</span>,</span>
+<span id="cb12-78"><a href="#cb12-78"></a> <span class="co">&quot;UGLY&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="hack-3-items"><strong>HACK</strong> – 3 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+HACK: patches the chevron renderer to not replace html strings (line 1038)</p><details>
+<div class="sourceCode" id="cb13" data-startFrom="1038"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 1037;"><span id="cb13-1038"><a href="#cb13-1038"></a> <span class="co"># </span><span class="al">HACK</span><span class="co">: patches the chevron renderer to not replace html strings</span></span>
+<span id="cb13-1039"><a href="#cb13-1039"></a> chevron.renderer._html_escape <span class="op">=</span> <span class="kw">lambda</span> string: string</span>
+<span id="cb13-1040"><a href="#cb13-1040"></a> rendered : <span class="bu">str</span> <span class="op">=</span> chevron.render(</span>
+<span id="cb13-1041"><a href="#cb13-1041"></a>     ms_template,</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+HACK”, (line 274)</p><details>
+<div class="sourceCode" id="cb14" data-startFrom="274"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 273;"><span id="cb14-274"><a href="#cb14-274"></a> <span class="co">&quot;h1&quot;</span>: <span class="st">&quot;HACK&quot;</span>,</span>
+<span id="cb14-275"><a href="#cb14-275"></a> <span class="co">&quot;ul1&quot;</span>: [</span>
+<span id="cb14-276"><a href="#cb14-276"></a>     {</span>
+<span id="cb14-277"><a href="#cb14-277"></a>         <span class="st">&quot;h2&quot;</span>: <span class="st">&quot;foo.cpp&quot;</span>,</span>
+<span id="cb14-278"><a href="#cb14-278"></a>         <span class="st">&quot;ul2&quot;</span>: [</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+HACK”, (line 79)</p><details>
+<div class="sourceCode" id="cb15" data-startFrom="79"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 78;"><span id="cb15-79"><a href="#cb15-79"></a> <span class="co">&quot;HACK&quot;</span>,</span>
+<span id="cb15-80"><a href="#cb15-80"></a> <span class="co">&quot;NOTE&quot;</span>,</span>
+<span id="cb15-81"><a href="#cb15-81"></a> <span class="co">&quot;IDEA&quot;</span>,</span>
+<span id="cb15-82"><a href="#cb15-82"></a> <span class="co">&quot;REVIEW&quot;</span>,</span>
+<span id="cb15-83"><a href="#cb15-83"></a> <span class="co">&quot;OPTIMIZE&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="idea-1-item"><strong>IDEA</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+IDEA”, (line 81)</p><details>
+<div class="sourceCode" id="cb16" data-startFrom="81"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 80;"><span id="cb16-81"><a href="#cb16-81"></a> <span class="co">&quot;IDEA&quot;</span>,</span>
+<span id="cb16-82"><a href="#cb16-82"></a> <span class="co">&quot;REVIEW&quot;</span>,</span>
+<span id="cb16-83"><a href="#cb16-83"></a> <span class="co">&quot;OPTIMIZE&quot;</span>,</span>
+<span id="cb16-84"><a href="#cb16-84"></a> <span class="co">&quot;CONFIG&quot;</span>,</span>
+<span id="cb16-85"><a href="#cb16-85"></a> <span class="co">&quot;!!!&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="note-2-items"><strong>NOTE</strong> – 2 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+NOTE: moustance wants double curly braces (line 226)</p><details>
+<div class="sourceCode" id="cb17" data-startFrom="226"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 225;"><span id="cb17-226"><a href="#cb17-226"></a> <span class="co"># </span><span class="al">NOTE</span><span class="co">: moustance wants double curly braces</span></span>
+<span id="cb17-227"><a href="#cb17-227"></a> <span class="cf">return</span> (</span>
+<span id="cb17-228"><a href="#cb17-228"></a>     <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span></span>
+<span id="cb17-229"><a href="#cb17-229"></a>     .join(output)</span>
+<span id="cb17-230"><a href="#cb17-230"></a>     .replace(<span class="st">&#39;{&#39;</span>, <span class="st">&#39;</span><span class="sc">{{</span><span class="st">&#39;</span>)</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+NOTE”, (line 80)</p><details>
+<div class="sourceCode" id="cb18" data-startFrom="80"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 79;"><span id="cb18-80"><a href="#cb18-80"></a> <span class="co">&quot;NOTE&quot;</span>,</span>
+<span id="cb18-81"><a href="#cb18-81"></a> <span class="co">&quot;IDEA&quot;</span>,</span>
+<span id="cb18-82"><a href="#cb18-82"></a> <span class="co">&quot;REVIEW&quot;</span>,</span>
+<span id="cb18-83"><a href="#cb18-83"></a> <span class="co">&quot;OPTIMIZE&quot;</span>,</span>
+<span id="cb18-84"><a href="#cb18-84"></a> <span class="co">&quot;CONFIG&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="old-1-item"><strong>OLD</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+OLD” (line 86)</p><details>
+<div class="sourceCode" id="cb19" data-startFrom="86"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 85;"><span id="cb19-86"><a href="#cb19-86"></a>         <span class="co">&quot;OLD&quot;</span></span>
+<span id="cb19-87"><a href="#cb19-87"></a>     ],</span>
+<span id="cb19-88"><a href="#cb19-88"></a> },</span>
+<span id="cb19-89"><a href="#cb19-89"></a> <span class="co"># &#39;comments&#39; : {</span></span>
+<span id="cb19-90"><a href="#cb19-90"></a> <span class="co">#     &#39;require&#39; : False,</span></span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="optimize-1-item"><strong>OPTIMIZE</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+OPTIMIZE”, (line 83)</p><details>
+<div class="sourceCode" id="cb20" data-startFrom="83"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 82;"><span id="cb20-83"><a href="#cb20-83"></a>     <span class="co">&quot;OPTIMIZE&quot;</span>,</span>
+<span id="cb20-84"><a href="#cb20-84"></a>     <span class="co">&quot;CONFIG&quot;</span>,</span>
+<span id="cb20-85"><a href="#cb20-85"></a>     <span class="co">&quot;!!!&quot;</span>,</span>
+<span id="cb20-86"><a href="#cb20-86"></a>     <span class="co">&quot;OLD&quot;</span></span>
+<span id="cb20-87"><a href="#cb20-87"></a> ],</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="review-4-items"><strong>REVIEW</strong> – 4 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+REVIEW: this function should eventually be replaced by <code>write_items_ms_template()</code>, (line 1069)</p><details>
+<div class="sourceCode" id="cb21" data-startFrom="1069"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 1068;"><span id="cb21-1069"><a href="#cb21-1069"></a> REVIEW: this function should eventually be replaced by `write_items_ms_template()`,</span>
+<span id="cb21-1070"><a href="#cb21-1070"></a> but can be preserved <span class="im">as</span> a fallback <span class="cf">for</span> when `chevron` <span class="kw">is</span> <span class="kw">not</span> installed</span>
+<span id="cb21-1071"><a href="#cb21-1071"></a> prints <span class="kw">in</span> markdown <span class="bu">format</span>, <span class="cf">with</span> h1 headings <span class="cf">for</span> tags <span class="kw">and</span> h2 headings <span class="cf">for</span> files. </span>
+<span id="cb21-1072"><a href="#cb21-1072"></a> then, <span class="bu">print</span> ordered by line number</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+REVIEW: so now, after spending several hours, I look in a separate cloned version of this project and find a commit that adds this function (to <code>itodo.py</code>, which im deleting in this commit), and remember that I wanted to store both configs and the written data in the same markdown file. this might not be the best idea, but maybe its worth looking into later. For now, the plan was to write metadata (count of items, files, lines, etc) in the yaml front matter. maybe store the config in there too though (but this would make it tough to write the yaml to an html file). either way, this function is still useful. (line 328)</p><details>
+<div class="sourceCode" id="cb22" data-startFrom="328"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 327;"><span id="cb22-328"><a href="#cb22-328"></a> REVIEW: so now, after spending several hours, I look <span class="kw">in</span> a separate cloned version of this project <span class="kw">and</span> find a commit that adds this function (to `itodo.py`, which im deleting <span class="kw">in</span> this commit), <span class="kw">and</span> remember that I wanted to store both configs <span class="kw">and</span> the written data <span class="kw">in</span> the same markdown <span class="bu">file</span>. this might <span class="kw">not</span> be the best idea, but maybe its worth looking into later. For now, the plan was to write metadata (count of items, files, lines, etc) <span class="kw">in</span> the yaml front matter. maybe store the config <span class="kw">in</span> there too though (but this would make it tough to write the yaml to an html <span class="bu">file</span>). either way, this function <span class="kw">is</span> still useful.</span>
+<span id="cb22-329"><a href="#cb22-329"></a> <span class="co">### Parameters:</span></span>
+<span id="cb22-330"><a href="#cb22-330"></a>  <span class="op">-</span> `filename : str`   </span>
+<span id="cb22-331"><a href="#cb22-331"></a>    markdown <span class="bu">file</span></span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+REVIEW: <code>split_by_attribute()</code> does this and more, code should be removed at some point (line 793)</p><details>
+<div class="sourceCode" id="cb23" data-startFrom="793"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 792;"><span id="cb23-793"><a href="#cb23-793"></a> REVIEW: `split_by_attribute()` does this <span class="kw">and</span> more, code should be removed at some point </span>
+<span id="cb23-794"><a href="#cb23-794"></a> <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb23-795"><a href="#cb23-795"></a><span class="co"> items_byTag : Dict[str, List[TodoItem]] = dict()</span></span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+REVIEW”, (line 82)</p><details>
+<div class="sourceCode" id="cb24" data-startFrom="82"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 81;"><span id="cb24-82"><a href="#cb24-82"></a> <span class="co">&quot;REVIEW&quot;</span>,</span>
+<span id="cb24-83"><a href="#cb24-83"></a> <span class="co">&quot;OPTIMIZE&quot;</span>,</span>
+<span id="cb24-84"><a href="#cb24-84"></a> <span class="co">&quot;CONFIG&quot;</span>,</span>
+<span id="cb24-85"><a href="#cb24-85"></a> <span class="co">&quot;!!!&quot;</span>,</span>
+<span id="cb24-86"><a href="#cb24-86"></a> <span class="co">&quot;OLD&quot;</span></span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="todo-6-items"><strong>TODO</strong> – 6 items</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+TODO: replace any chars that need to be escaped that arent inside code blocks (line 1036)</p><details>
+<div class="sourceCode" id="cb25" data-startFrom="1036"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 1035;"><span id="cb25-1036"><a href="#cb25-1036"></a> <span class="co"># </span><span class="al">TODO</span><span class="co">: replace any chars that need to be escaped that arent inside code blocks</span></span>
+<span id="cb25-1037"><a href="#cb25-1037"></a> <span class="co"># </span><span class="al">HACK</span><span class="co">: patches the chevron renderer to not replace html strings</span></span>
+<span id="cb25-1038"><a href="#cb25-1038"></a> chevron.renderer._html_escape <span class="op">=</span> <span class="kw">lambda</span> string: string</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+TODO: print to console if no output file specified (line 1167)</p><details>
+<div class="sourceCode" id="cb26" data-startFrom="1167"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 1166;"><span id="cb26-1167"><a href="#cb26-1167"></a> <span class="co"># </span><span class="al">TODO</span><span class="co">: print to console if no output file specified</span></span>
+<span id="cb26-1168"><a href="#cb26-1168"></a> <span class="cf">with</span> <span class="bu">open</span>(cfg[<span class="st">&#39;file_todo&#39;</span>], <span class="st">&#39;w&#39;</span>, encoding <span class="op">=</span> <span class="st">&#39;utf-8&#39;</span>) <span class="im">as</span> fout:</span>
+<span id="cb26-1169"><a href="#cb26-1169"></a>     <span class="bu">print</span>(<span class="st">&#39;---&#39;</span>, <span class="bu">file</span> <span class="op">=</span> fout)</span>
+<span id="cb26-1170"><a href="#cb26-1170"></a>     <span class="bu">print</span>(yaml.dump(HEADER_YAML), <span class="bu">file</span> <span class="op">=</span> fout)</span>
+<span id="cb26-1171"><a href="#cb26-1171"></a>     <span class="bu">print</span>(yaml.dump(metadata_dict), <span class="bu">file</span> <span class="op">=</span> fout)</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+TODO”, (line 255)</p><details>
+<div class="sourceCode" id="cb27" data-startFrom="255"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 254;"><span id="cb27-255"><a href="#cb27-255"></a> <span class="co">&quot;h1&quot;</span>: <span class="st">&quot;TODO&quot;</span>,</span>
+<span id="cb27-256"><a href="#cb27-256"></a> <span class="co">&quot;ul1&quot;</span>: [</span>
+<span id="cb27-257"><a href="#cb27-257"></a>     {</span>
+<span id="cb27-258"><a href="#cb27-258"></a>         <span class="st">&quot;h2&quot;</span>: <span class="st">&quot;foo.cpp&quot;</span>,</span>
+<span id="cb27-259"><a href="#cb27-259"></a>         <span class="st">&quot;ul2&quot;</span>: [</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+TODO: do this using globs (line 648)</p><details>
+<div class="sourceCode" id="cb28" data-startFrom="648"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 647;"><span id="cb28-648"><a href="#cb28-648"></a> <span class="co"># </span><span class="al">TODO</span><span class="co">: do this using globs</span></span>
+<span id="cb28-649"><a href="#cb28-649"></a> <span class="cf">for</span> ex <span class="kw">in</span> exclude:</span>
+<span id="cb28-650"><a href="#cb28-650"></a>     sw : <span class="bu">str</span> <span class="op">=</span> os.path.join(searchdir, ex)</span>
+<span id="cb28-651"><a href="#cb28-651"></a>     files_search <span class="op">=</span> [</span>
+<span id="cb28-652"><a href="#cb28-652"></a>         unixPath(x)</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+TODO”, (line 73)</p><details>
+<div class="sourceCode" id="cb29" data-startFrom="73"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 72;"><span id="cb29-73"><a href="#cb29-73"></a> <span class="co">&quot;TODO&quot;</span>,</span>
+<span id="cb29-74"><a href="#cb29-74"></a> <span class="co">&quot;FIXME&quot;</span>,</span>
+<span id="cb29-75"><a href="#cb29-75"></a> <span class="co">&quot;FIX&quot;</span>,</span>
+<span id="cb29-76"><a href="#cb29-76"></a> <span class="co">&quot;BUG&quot;</span>,</span>
+<span id="cb29-77"><a href="#cb29-77"></a> <span class="co">&quot;DEBUG&quot;</span>,</span></code></pre></div>
+</details></li>
+<li><p><input type="checkbox" disabled="" />
+TODO: use defaultdict here (line 848)</p><details>
+<div class="sourceCode" id="cb30" data-startFrom="848"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 847;"><span id="cb30-848"><a href="#cb30-848"></a> <span class="co"># </span><span class="al">TODO</span><span class="co">: use defaultdict here</span></span>
+<span id="cb30-849"><a href="#cb30-849"></a> items_byAttr : Dict[<span class="bu">str</span>, List[TodoItem]] <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb30-850"><a href="#cb30-850"></a></span>
+<span id="cb30-851"><a href="#cb30-851"></a> <span class="co"># actually filter everything by the attribute value</span></span>
+<span id="cb30-852"><a href="#cb30-852"></a> <span class="cf">for</span> itm <span class="kw">in</span> td_items:</span></code></pre></div>
+</details></li>
+</ul>
+<h2 id="ugly-1-item"><strong>UGLY</strong> – 1 item</h2>
+<ul class="task-list">
+<li><p><input type="checkbox" disabled="" />
+UGLY”, (line 78)</p><details>
+<div class="sourceCode" id="cb31" data-startFrom="78"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 77;"><span id="cb31-78"><a href="#cb31-78"></a> <span class="co">&quot;UGLY&quot;</span>,</span>
+<span id="cb31-79"><a href="#cb31-79"></a> <span class="co">&quot;HACK&quot;</span>,</span>
+<span id="cb31-80"><a href="#cb31-80"></a> <span class="co">&quot;NOTE&quot;</span>,</span>
+<span id="cb31-81"><a href="#cb31-81"></a> <span class="co">&quot;IDEA&quot;</span>,</span>
+<span id="cb31-82"><a href="#cb31-82"></a> <span class="co">&quot;REVIEW&quot;</span>,</span></code></pre></div>
+</details></li>
+</ul>
+</body>
+</html>
