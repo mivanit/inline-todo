@@ -56,12 +56,11 @@ from omegaconf import OmegaConf,DictConfig,ListConfig
 
 CONFIG_DEFAULT : DictConfig = OmegaConf.create({
 	'config' : {
-		'file_in' : 'itodo.yml',
-		'file_out' : None,
+		'cfg_read' : 'itodo.yml',
+		'searchDir' : '.',
+		'file_todo' : 'todo-inline.md',
+		'verbose' : False,
 	},
-	'searchDir' : '.',
-	'file_todo' : 'todo-inline.md',
-	'verbose' : False,
 	# 'output' : {
 	# 	'links'  	: True,
 	# 	'tag-sort'  : True,
@@ -168,17 +167,20 @@ MAP_EXTENSION_TO_LANGUAGE : Dict[str, str] = {
 
 ItemPrintFormats = Literal['md', 'md_det']
 
-ITM_FORMATS : Dict[ItemPrintFormats,str] = {
+# thanks copilot for figuring out how to link to specific line numbers here :)
+ITM_FORMATS : Dict[ItemPrintFormats,str] = { 
 'md' : """ - [ ] {self.content} 
 \t(line {self.lineNum})
 """,
 'md_det' : """ - [ ] {self.content} 
-\t(line {self.lineNum})
+\t[(line {self.lineNum})]({self.file}#L{self.lineNum})
 \t
 \t<details>
+
 \t```{{.{lang} .numberLines startFrom="{startFrom}"}}
 {self.context_processed}
 \t```
+
 \t</details>
 """,
 }
@@ -360,10 +362,8 @@ def add_default_excludes(config : DictConfig) -> None:
 	
 	modifies `config['read']['EXCLUDE']`, by appending 
 	```python
-		config['file_todo'], # output file
-		config['config']['file_in'], # input config file
-		config['config']['file_out'], # input config file
-		__file__, # this file
+		config['config']['cfg_read'], # input config file
+		config['config']['file_todo'], # output file
 	```
 	
 	### Parameters:
@@ -375,10 +375,8 @@ def add_default_excludes(config : DictConfig) -> None:
 	
 	"""
 	config['read']['EXCLUDE'].extend([
-		config['file_todo'], # output file
-		config['config']['file_in'], # input config file
-		config['config']['file_out'], # input config file
-		__file__, # this file
+		config['config']['cfg_read'], # input config file
+		config['config']['file_todo'], # output file
 	])
 
 	# remove all non-strings from the exclude list
@@ -398,10 +396,13 @@ def load_file_config(filename : str) -> Optional[DictConfig]:
 	 - `Optional[DictConfig]` 
 	   returns `None` if file is not found or another error occurs
 	"""
+	# print(f"loading config from file: {filename}", file=sys.stderr)
 	try:
 		if os.path.isfile(filename):
 			cfg_temp : Union[DictConfig, ListConfig] = OmegaConf.load(filename)
 			cfg : DictConfig = assert_DictConfig(cfg_temp)
+		
+			return cfg
 
 	except (FileNotFoundError,TypeError) as e:
 		warnings.warn(f"loading config file failed:\t {filename} \n\tException caught, ignoring: {e}")
@@ -415,14 +416,14 @@ def process_configs(argv : List[str]) -> DictConfig:
 		
 	reads from:
 	 - `CONFIG_DEFAULT`
-	 - file specified by `CONFIG_DEFAULT['config']['file_in']`
+	 - file specified by `CONFIG_DEFAULT['config']['cfg_read']`
 	 - command line args
-	 - file specified by command line arg `--config.file_in`
+	 - file specified by command line arg `--config.cfg_read`
 	
 	Merges those configs into a single `OmegaConf.DictConfig` object, in the following order:
 	 - `CONFIG_DEFAULT`
-	 - file specified by `CONFIG_DEFAULT['config']['file_in']`
-	 - file specified by command line arg `--config.file_in`
+	 - file specified by `CONFIG_DEFAULT['config']['cfg_read']`
+	 - file specified by command line arg `--config.cfg_read`
 	 - command line args
 
 	### Parameters:
@@ -434,6 +435,7 @@ def process_configs(argv : List[str]) -> DictConfig:
 	   merged config object
 	"""	
 
+	# clip the "python" command and file from the args
 	argv = argv[1:]
 
 	# default options
@@ -441,7 +443,7 @@ def process_configs(argv : List[str]) -> DictConfig:
 
 	# try to load config from default given file
 	cfg_file_default : Optional[DictConfig] = assert_Optional_DictConfig(
-		load_file_config(cfg_default['config']['file_in'])
+		load_file_config(cfg_default['config']['cfg_read'])
 	)
 	
 	# load command line arguments
@@ -449,9 +451,9 @@ def process_configs(argv : List[str]) -> DictConfig:
 
 	# try to load config from cmd given file
 	cfg_file_cmd : Optional[DictConfig] = None
-	if ('config' in cfg_cmd) and ('file_in' in cfg_cmd['config']):
+	if ('config' in cfg_cmd) and ('cfg_read' in cfg_cmd['config']):
 		cfg_file_cmd = assert_Optional_DictConfig(
-			load_file_config(cfg_cmd['config']['file_in'])
+			load_file_config(cfg_cmd['config']['cfg_read'])
 		)
 
 	# merge the configs (listed in increasing priority)
@@ -470,11 +472,6 @@ def process_configs(argv : List[str]) -> DictConfig:
 	# dont read this source file, or config files
 	add_default_excludes(cfg)
 
-	if cfg['config']['file_out'] is not None:
-		# save the current (merged) config to the specified file
-		OmegaConf.save(cfg, cfg['config']['file_out'])
-		print('> saved config to\t%s' % cfg['config']['file_out'])
-
 	return cfg
 
 
@@ -491,6 +488,7 @@ def process_configs(argv : List[str]) -> DictConfig:
 
 
 class TodoItem(object):
+	"""todo item class"""
 
 	Attr = Literal['tag', 'file', 'lineNum', 'line', 'context', 'content']
 
@@ -1149,7 +1147,7 @@ def main(argv):
 	
 	# get all valid files
 	filenames : List[str] = get_valid_files(
-		searchdir = cfg['searchDir'],
+		searchdir = cfg['config']['searchDir'],
 		file_types = cfg['read']['SOURCE_FILES'],
 		exclude = set(cfg['read']['EXCLUDE']),
 	)
@@ -1178,10 +1176,16 @@ def main(argv):
 
 	# write to file
 	# TODO: print to console if no output file specified
-	with open(cfg['file_todo'], 'w', encoding = 'utf-8') as fout:
+	with open(cfg['config']['file_todo'], 'w', encoding = 'utf-8') as fout:
 		print('---', file = fout)
 		print(yaml.dump(HEADER_YAML), file = fout)
 		print(yaml.dump(metadata_dict), file = fout)
+		print(
+			yaml.dump(
+				dict(cfg = OmegaConf.to_container(cfg, resolve=True)),
+				sort_keys = False),
+			file = fout,
+		)
 		print('# suggested command for conversion to html', file = fout)
 		print('cmd: "pandoc todo-inline.md -o todo-inline.html --from markdown+backtick_code_blocks+fenced_code_attributes --standalone --toc --toc-depth 1"', file = fout)
 		print('---', file = fout)
